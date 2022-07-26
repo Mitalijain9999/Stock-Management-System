@@ -1,0 +1,172 @@
+body{
+    margin:0;
+    font-family:Verdana;
+   
+}
+header{
+    background-color:rgb(31, 129, 161);
+    margin-bottom: 0;
+}
+#logo{
+     width:8vw;
+     height:6vw;
+}
+.prev-order{
+    text-align:center;
+}
+nav{
+    background-color:rgb(31, 129, 161); 
+}
+.nav-list{
+    list-style-type: none;
+    float:right;
+}
+.nav-list li{
+    margin-right: 10px;
+    display:inline;
+}
+.nav-list li a{
+    text-decoration: none;
+    color:white;
+    font-size: 15px;
+    vertical-align: middle;
+    font-weight: 700;
+}
+.nav-list li a:hover{
+    color:black;
+    transition-duration: 1s;
+}
+#logo-image{
+    display: inline-block;
+    width:50vw;
+}
+#wallpaper{
+    width:35vw;
+    height:auto;
+   
+}
+.right-part{
+    color:white;
+    font-size: 2.8vw;
+    margin-top:10%;
+    font-family:Cookie;
+}
+aside{
+    margin-left:5vw;
+    width:30vw;
+    display:inline-block;
+    vertical-align: top;
+}
+aside p{
+    color:white;
+    font-size: 2.8vw;
+    margin-top:20%;
+    font-family:Cookie; 
+}
+button{
+    width:7vw;
+    height:auto;
+    font-size:20px;
+    padding:2%;
+    background-color:rgb(7, 7, 73);
+    color:white;
+    border-radius: 15%;
+    margin-left:15vw;
+    outline:none;
+    border: none;
+}
+#about div{
+    font-size: 3.2vw;
+    padding-top:10%;
+    color:white;
+    margin-left:8vw;
+    font-family: Cookie;
+}
+#about{
+    margin-top:0;
+    background-image:url('/images/about.jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    opacity:0.8;
+    width:100%;
+    height:80%;
+}
+#about p{
+    color:whitesmoke;
+    margin:1vw;
+    margin-left:8vw;
+    margin-right:10vw;
+    text-align: justify;
+    line-height: 2.5rem;
+    font-size: 20px;
+}
+#contact{
+    background-color:rgb(31, 129, 161);
+    height:auto;
+    margin-top: -13.5px;;
+}
+#contact img {
+    width:40%;
+    height:60%;
+    display:inline-block;
+    margin-bottom: 0;
+    margin-top: 10%;
+    margin-left:10%
+}
+#contactus{
+    display:inline-block;
+    vertical-align: top;
+    height:60%;
+    width:35%;
+    font-size: 3.2vw;
+    padding-top:10%;
+    color:white;
+    margin-left:10%;
+    font-family: Cookie;
+    line-height: 3.5rem;
+}
+.address>div{
+    font-size:2vw;
+    margin-left:0;
+}
+.social ul{
+    width:100%;
+    list-style: none;
+    text-align: center;
+}
+.social-icons{
+    margin-top:0vh;	
+    margin-bottom:3vh;
+    position: relative;
+}
+.social-icons li{
+    display:inline-block;
+	font-size:1.5rem;
+    margin: 0 10px 10px 0;
+    font-weight:100;
+}
+.social-icons li a{
+    text-decoration: none;
+    color:white;
+    text-align:center;
+}
+.social-icons li a i{
+    padding:0.5rem;
+}
+.social-icons li a i:hover{
+	border-radius:50%;
+	box-shadow:0px 0px 4px 6px lightgrey;
+
+}
+#back{
+    text-align:center;
+    background-color: blueviolet;
+}
+#back a{
+    
+    text-decoration: none;
+    color:white;
+    margin-bottom:1vw;
+    font-size: 20px;
+}
