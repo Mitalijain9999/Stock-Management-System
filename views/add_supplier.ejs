@@ -1,0 +1,28 @@
+<%- include('header') -%>
+<div class="container">
+    <div class="jumbotron">
+      <h1>Add supplier</h1>
+    </div>
+</div>
+<div class="container">
+
+  <form action="/add_supplier" method="post" accept-charset="utf-8">
+    <div class="form-group">
+      <label for="supplier_name">Supplier name:</label>
+      <input type="text" class="form-control" id="supplier_name" name="supplier_name">
+    </div>
+    <div class="form-group">
+      <label for="supplier_contact">Supplier contact:</label>
+      <input type="text" class="form-control" id="supplier_contact" name="supplier_contact">
+    </div>
+    <button type="submit" id="submitBtn" value = "Submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Add supplier</button>
+  </form>
+  <p>
+
+  </p>
+<hr/>
+
+  <a href='/../list_suppliers' class="btn btn-default" role="button"><span class="glyphicon glyphicon-step-backward"></span>Back</a>
+
+</div>
+</body>
