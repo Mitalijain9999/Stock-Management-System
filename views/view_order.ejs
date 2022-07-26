@@ -1,0 +1,315 @@
+
+<link rel='stylesheet' type='text/css' href='css/product.css'>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+
+#order_total {
+  border:0;
+}
+
+  h3 {display:inline;
+  text-align: right;}
+
+</style>
+
+<script src="http://www.virtuosoft.eu/code/bootstrap-touchspin/bootstrap-touchspin/v3.0.1/jquery.bootstrap-touchspin.js"></script>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>View order</h1>
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <div class="row">
+          <div class="container">
+
+              <label for="suppliers">Supplier:
+              <select class="form-control" id="suppliers_list">
+                <option disabled selected value></option>
+
+              <% suppliers.forEach(function(item) { %>
+
+              <option id="supplier_choice" value='<%= item["supplier_name"]+" ("+item["supplier_contact"] %>)' ><%= item["supplier_name"]+" ("+item["supplier_contact"] %>)</option>
+
+              <% }); %>
+
+            </select>
+              </label>
+</div>
+</div>
+<div class="row">
+  <div class="container">
+<p>
+
+</p>
+  <label for="products">Product:
+
+  <select class="form-control" id="products_list">
+  </select>
+  </label>
+</div>
+
+</div>
+<div class="row">
+  <div class="container"><label for="products">Quantity:
+</div>
+<p>
+
+</p>
+ <div class="col-xs-6">
+    <input id="quantity" type="text" value="1" name="quantity">
+    <script>
+        $("input[name='quantity']").TouchSpin({min:1});
+    </script><p>
+</div>
+</p>
+
+</div>
+<script>
+$(document).ready(function(){
+    $('#suppliers_list').keyup(function(){
+      $('#products_list').keyup(function(){
+        $('#addOrderBtn').prop('disabled', this.value == "" ? true : false);
+      })
+    })
+});
+</script>
+<div class="row">
+  <div class="container">
+
+
+    <button id="addOrderBtn" class="btn btn-info btn-large pull-right" onclick="add_to_order();"><span class="glyphicon glyphicon-plus"></span> Add to order</button>
+
+            </div>
+
+</div>
+
+<form action="add_order" method="post">
+
+        <input type="hidden" name="last_price" id="last_price" value=0 >
+<div id="content">
+
+
+<h1>Order summary</h1>
+  <div class="container" id="summary">
+
+
+  </div>
+
+<div>
+  <div class="col">
+  <h2 class="text-left">Total price</h2>
+</div>
+</div>
+
+<div class="col pull-left">
+
+    <h3>£</h3><h3 class="text-right" ><input type="text" name="order_total" id="order_total" value=0 ></h3>
+
+</div>
+
+<!-- <a href='add_order' class="btn btn-primary btn-large"><span class="glyphicon glyphicon-floppy-disk"></span> Save order</a> -->
+<p>
+
+</p>
+<hr/>
+
+<div class="col pull-right">
+
+  <button type="submit" id="submitBtn" value = "Submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save order</button>
+  <p>
+
+  </p>
+</div>
+
+</form>
+
+
+
+</div>
+
+
+
+</div>
+
+<script>
+
+(function ($) {
+  $('.spinner .btn:first-of-type').on('click', function() {
+    $('.spinner input').val( parseInt($('.spinner input').val(), 10) + 1);
+  });
+  $('.spinner .btn:last-of-type').on('click', function() {
+    $('.spinner input').val( parseInt($('.spinner input').val(), 10) - 1);
+  });
+})(jQuery);
+
+$(document).ready (function(){
+
+  $('#suppliers_list').keyup(function(){
+    $('#products_list').keyup(function(){
+      $('#addOrderBtn').prop('disabled', this.value == null ? true : false);
+    })
+  })
+
+            $("#success-alert").hide();
+            $("#addOrderBtn").click(function showAlert() {
+                $("#success-alert").alert();
+                $("#success-alert").fadeTo(1500, 500).slideUp(500, function(){
+               $("#success-alert").slideUp(500);
+                });
+            });
+
+            // $('#suppliers_list').keyup(function(){
+            //   $('#products_list').keyup(function(){
+            //     $('#addOrderBtn').prop('disabled', this.value == null ? true : false);
+            //   })
+            // })
+ });
+ function resizeInput() {
+     $(this).attr('size', $(this).val().length);
+ }
+
+
+</script>
+
+        <script>
+        document.getElementById("submitBtn").disabled = true;
+
+        document.getElementById("order_total").innerHTML = 0;
+
+        <% suppliers.forEach(function(item) { %>
+
+            <%= item["supplier_name"].split(' ').join('_') %> = new Array([<% item["products"].forEach(function(thing) { %>
+            "<%= thing["product_name"] %> : £<%= thing["product_price"] %> " ,
+            <% }); %>
+            ]);
+
+              <% }); %>
+
+              <% suppliers.forEach(function(item) { %>
+              <%= item["supplier_name"].split(' ').join('_')%> = <%= item["supplier_name"].split(' ').join('_')%>[0];
+              <% }); %>
+
+        $("#suppliers_list").change(function () {
+          // console.log('hello');
+          populateSelect();
+        });
+
+        function clearBoxes(){
+          document.getElementById("suppliers_list").value = "";
+          document.getElementById("products_list").value = "";
+          document.getElementById("quantity").value = "1";
+
+        }
+
+
+        function populateSelect(){
+            cat=$('#suppliers_list').val().split(" (")[0].split(' ').join('_');
+            $('#products_list').html('');
+            // console.log($('#supplier_choice').val());
+               eval(cat).forEach(function(t) {
+                 console.log(t);
+                    $('#products_list').append('<option>'+t+'</option>');
+                });
+            }
+
+            function removeElement(elementId) {
+                // Removes an element from the document
+
+                document.getElementById("order_total").value = parseFloat($('#order_total').value()) - prices_dict[elementId] ;
+                if (document.getElementById("order_total").value == 0){
+                  document.getElementById("submitBtn").disabled = true;
+                }
+                else {
+                  document.getElementById("submitBtn").disabled = false;
+                }
+                var element = document.getElementById(elementId);
+                element.remove();
+                // $('#summary hr').remove();
+                //
+
+            }
+
+            var fileId = 0; // used by the addFile() function to keep track of IDs
+            var prices_dict = {};
+
+            function add_to_order() {
+              // console.log($('#suppliers').val().length);
+              if ($('#suppliers_list').val().length != 0 && $('#products_list').val().length != 0)   {
+              fileId++; // increment fileId to get a unique ID for the new element
+              var priceToAdd = parseFloat($('#quantity').val())*(parseFloat($('#products_list').val().split("£")[1]));
+              // /var supplier_order = $('#suppliers').val();
+                document.getElementById('summary').innerHTML +=
+
+                '<div id='+fileId+'><a class="btn btn-default btn-block" role="button">'+
+                '<li>Supplier: <input style="border:none;background:transparent;color:#000;" type="text" name="supplier_name" id="supplier_name" value='+
+                $('#suppliers_list').val().split(" (")[0]+
+                '></li>'+
+                '<li>Product: <input style="border:none;background:transparent;color:#000;" type="text" name="product_name" id="product_name" value='+
+                $('#products_list').val().split(' :')[0]+
+                '></li>'+
+                '<li>Quantity: <input style="border:none;background:transparent;color:#000;" type="text" name="product_quantity" id="product_quantity" value='+
+                $('#quantity').val()+
+                '></li>'+
+                '<li>Price per unit (£): <input style="border:none;background:transparent;color:#000;" type="text" name="product_price" id="product_price" value='+
+                (parseFloat($('#products_list').val().split("£")[1]))+
+                '></li>'+
+                '<li>Cost for items (£): <input style="border:none;background:transparent;color:#000;" type="text" name="product_price_total" id="product_price_total" value='+
+                priceToAdd+
+                '></li>'+
+                '</a><a href="" onclick="javascript:removeElement('+fileId + '); return false;">Remove</a></div><hr />';
+               var new_total = parseFloat($('#order_total').text()) + priceToAdd;
+               new_total = new_total.toFixed(2);
+                document.getElementById("order_total").innerHTML = new_total;
+                document.getElementById("order_total").value = new_total;
+                document.getElementById("last_price").value = priceToAdd;
+                prices_dict[fileId] = parseFloat(priceToAdd);
+                if (document.getElementById("order_total").value > 0){
+                  document.getElementById("submitBtn").disabled = false;
+                }
+                clearBoxes();
+            }}
+
+        </script>
+        <script>
+        var fileId = 0; // used by the addFile() function to keep track of IDs
+        var prices_dict = {};
+
+        <% for(var i=0; i<order['items'][0]['supplier_name'].length; i++) { %>
+
+          fileId++; // increment fileId to get a unique ID for the new element
+          var priceToAdd = parseFloat(<%= order['items'][0]['product_total_cost'][i] %>);
+          // /var supplier_order = $('#suppliers').val();
+          document.getElementById('summary').innerHTML +=
+          '<div id='+fileId+'><a class="btn btn-default btn-block" role="button">'+
+          '<li>Supplier: <input style="border:none;background:transparent;color:#000;" type="text" name="supplier_name" id="supplier_name" value="<%=order['items'][0]['supplier_name'][i]%>"></li>'+
+          '<li>Product: <input style="border:none;background:transparent;color:#000;" type="text" name="product_name" id="product_name" value="<%=order['items'][0]['product_name'][i]%>"></li>'+
+          '<li>Quantity: <input style="border:none;background:transparent;color:#000;" type="text" name="product_quantity" id="product_quantity" value="<%=order['items'][0]['product_quantity'][i]%>"></li>'+
+          '<li>Price per unit (£): <input style="border:none;background:transparent;color:#000;" type="text" name="product_price" id="product_price" value='+
+          parseFloat(<%=order['items'][0]['product_price'][i]%>)+
+          '></li>'+
+          '<li>Cost for items (£): <input style="border:none;background:transparent;color:#000;" type="text" name="product_price_total" id="product_price_total" value='+
+          priceToAdd+
+          '></li>'+
+          '</a><a href="" onclick="javascript:removeElement('+fileId + '); return false;">Remove</a></div><hr />';
+         var new_total = parseFloat($('#order_total').text()) + priceToAdd;
+         new_total = new_total.toFixed(2);
+          document.getElementById("order_total").innerHTML = new_total;
+          document.getElementById("order_total").value = new_total;
+          document.getElementById("last_price").value = priceToAdd;
+          prices_dict[fileId] = parseFloat(priceToAdd);
+          if (document.getElementById("order_total").value > 0){
+            document.getElementById("submitBtn").disabled = false;
+          }
+          clearBoxes();
+
+        <% }; %>
+
+        </script>
+        </body>
