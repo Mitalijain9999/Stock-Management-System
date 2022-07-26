@@ -1,0 +1,54 @@
+<%- include('header') -%>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+<style>
+.dataTables_filter {
+   width: 50%;
+   float: left;
+   text-align: left;
+}
+</style>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+
+<div class="container">
+    <div class="jumbotron">
+      <h1>View supplier</h1>
+    </div>
+</div>
+<div class="container">
+
+<table id="example" class="display" cellspacing="0" width="100%">
+  <thead>
+      <tr>
+          <th>Product name</th>
+          <th>Product price</th>
+      </tr>
+  </thead>
+  <tbody>
+
+<% supplier['products'].forEach(function(item) { %>
+<tr><td><%=item['product_name'] %></td><td><%=item['product_price'] %></td></tr>
+  <% }); %>
+
+</tbody>
+
+</table>
+
+</hr>
+<span class="pull-right button-group">
+
+<a href='/../list_suppliers' class="btn btn-default" role="button"><span class="glyphicon glyphicon-step-backward"></span>Back</a>
+
+<a href='edit_supplier/<%= supplier["_id"] %>' class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit supplier</a>
+</span>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#example').DataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": true,
+    "bInfo": false,
+    "bAutoWidth": false });
+} );
+</script>
