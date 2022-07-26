@@ -1,0 +1,22 @@
+{
+  "name": "joeshop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon Server.js"
+  },
+  "dependencies": {
+    "async": "^2.4.0",
+    "body-parser": "latest",
+    "ejs": "latest",
+    "express": "^4.17.1",
+    "express-helpers": "latest",
+    "moment": "^2.18.1",
+    "mongodb": "^2.2.36",
+    "monk": "^4.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
