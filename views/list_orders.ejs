@@ -1,0 +1,34 @@
+<%- include('header') -%>
+<div class="container">
+    <div class="jumbotron prev-order">
+      <h1>Previous orders</h1>
+    </div>
+</div>
+<div class="container">
+
+
+  <a href="new_order" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">New order</a>
+
+<hr />
+
+
+
+    <div class="container">
+      <p>
+
+      </p>
+      <% orders.forEach(function(item) { %>
+        <div class="list-group">
+          <a href='view_order/<%= item["_id"] %>' class="btn btn-default btn-block" role="button">
+
+
+            <p class="list-group-item-text">
+                Order date:
+                <%= item["order_datetime"] %>
+            </p>
+          </a>
+        </div>
+
+          <% }); %>
+
+</div>
