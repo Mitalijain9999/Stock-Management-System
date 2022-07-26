@@ -1,0 +1,311 @@
+<%- include('header') -%>
+<div class="container">
+    <div class="jumbotron">
+      <h1>Edit order</h1>
+    </div>
+</div>
+<style>
+
+#order_total {
+  border:0;
+}
+.spinner {
+  width: 100px;
+}
+.spinner input {
+  text-align: right;
+}
+.input-group-btn-vertical {
+  position: relative;
+  white-space: nowrap;
+  width: 1%;
+  vertical-align: middle;
+  display: table-cell;
+}
+.input-group-btn-vertical > .btn {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px;
+  margin-left: -1px;
+  position: relative;
+  border-radius: 0;
+}
+.input-group-btn-vertical > .btn:first-child {
+  border-top-right-radius: 4px;
+}
+.input-group-btn-vertical > .btn:last-child {
+  margin-top: -2px;
+  border-bottom-right-radius: 4px;
+}
+.input-group-btn-vertical i{
+  position: absolute;
+  top: 0;
+  left: 4px;
+}
+
+  h3 {display:inline;
+  text-align: right;}
+
+</style>
+<script>
+
+function removeElement(elementId) {
+    // Removes an element from the document
+  //  console.log(elementId);
+  //  console.log(document.getElementById("order_total").value );
+  //  console.log(document.getElementById('cost-for-items-'+elementId).value);
+    document.getElementById("order_total").value = parseFloat(document.getElementById("order_total").value) - document.getElementById('cost-for-items-'+elementId).value;
+    if (document.getElementById("order_total").value == 0){
+      document.getElementById("submitBtn").disabled = true;
+    }
+    var element = document.getElementById(elementId);
+    element.parentNode.removeChild(element);
+
+}
+
+</script>
+
+<div class="container">
+  <div class="row">
+    <div class="container">
+
+        <label for="suppliers">Supplier:
+        <input id="suppliers" list="suppliers_list">
+        <datalist id="suppliers_list">
+
+        <% suppliers.forEach(function(item) { %>
+
+        <option id="supplier_choice" value='<%= item["supplier_name"]+" ("+item["supplier_contact"] %>)' ></option>
+
+        <% }); %>
+
+        </datalist>
+        </label>
+</div>
+</div>
+<div class="row">
+<div class="container">
+<p>
+
+</p>
+<label for="products">Product:
+
+<input id="products" list="products_list">
+<datalist id="products_list">
+</datalist>
+</label>
+</div>
+
+</div>
+<div class="row">
+<div class="container"><label for="products">Quantity:
+<p>
+
+</p>
+<div class="input-group spinner">
+<input type="text" class="form-control" id="quantity" value="1">
+<div class="input-group-btn-vertical">
+  <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+  <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+</div>
+</div>
+</div>
+
+<p>
+
+</p>
+
+</div>
+<div class="row">
+<div class="container">
+
+        <input type="button" onclick="add_to_order();" class="btn btn-info btn-large pull-right" value="Add to order">
+
+      </div>
+
+</div>
+<form action="/update_order" method="post">
+
+<div class="container" id="summary">
+
+  <h1>Order summary</h1>
+  <%if (order['items'][0]['product_name'][0].length > 1) { %>
+
+  <% for(var i=0; i<order['items'][0]['product_name'].length; i++) { %>
+
+    <div id= <%= i.toString() %> >
+    <div class="form-group">
+      <label for="supplier_name">Supplier name:</label>
+      <input type="text" name="supplier_name" readonly class="form-control" value=<%= order['items'][0]['supplier_name'][i] %>>
+    </div>
+    <div class="form-group">
+      <label for="supplier_name">Supplier contact:</label>
+      <input type="text" name="supplier_contact" readonly class="form-control" value=<%= order['items'][0]['supplier_contact'][i] %>>
+    </div>
+
+    <div class="form-group">
+      <label for="supplier_name">Product name:</label>
+      <input type="text" name="product_name" readonly class="form-control" value=<%= order['items'][0]['product_name'][i] %>>
+    </div>
+
+    <div class="form-group">
+      <label for="supplier_name">Price per unit (£):</label>
+      <input type="text" name="product_price" readonly class="form-control" value=<%= order['items'][0]['product_price'][i] %>>
+    </div>
+
+    <div class="form-group">
+      <label for="supplier_name">Quantity</label>
+      <input type="text" name="product_quantity" readonly class="form-control" value=<%= order['items'][0]['product_quantity'][i] %>>
+    </div>
+
+    <div class="form-group">
+      <label for="cost_for_items">Cost for item(s) (£)</label>
+      <input type="text" name="product_price_total" id="cost-for-items-<%= i.toString() %>" readonly class="form-control" value=<%= order['items'][0]['product_total_cost'][i] %>>
+    </div>
+<a href="" onclick="removeElement(<%= i %>);return false;">Remove</a>
+<hr/>
+</div>
+    <% } %>
+    <% } else{ %>
+      <div id="0" >
+      <div class="form-group">
+        <label for="supplier_name">Supplier name:</label>
+        <input type="text" name="supplier_name" readonly class="form-control" value=<%= order['items'][0]['supplier_name'] %>>
+      </div>
+      <div class="form-group">
+        <label for="supplier_name">Supplier contact:</label>
+        <input type="text" name="supplier_contact" readonly class="form-control" value=<%= order['items'][0]['supplier_contact'] %>>
+      </div>
+
+      <div class="form-group">
+        <label for="supplier_name">Product name:</label>
+        <input type="text" name="product_name" readonly class="form-control" value=<%= order['items'][0]['product_name'] %>>
+      </div>
+
+      <div class="form-group">
+        <label for="supplier_name">Price per unit (£):</label>
+        <input type="text" name="product_price" readonly class="form-control" value=<%= order['items'][0]['product_price'] %>>
+      </div>
+
+      <div class="form-group">
+        <label for="supplier_name">Quantity</label>
+        <input type="text" name="product_quantity" readonly class="form-control" value=<%= order['items'][0]['product_quantity'] %>>
+      </div>
+
+      <div class="form-group">
+        <label for="cost_for_items">Cost for item(s) (£)</label>
+        <input type="text" name="product_price_total" id="cost-for-items-0" readonly class="form-control" value=<%= order['items'][0]['product_total_cost'] %>>
+      </div>
+  <a href="" onclick="removeElement(0);return false;">Remove</a>
+  <hr/>
+  </div>
+  <% } %>
+
+  </div>
+  <input type="hidden" name="last_price" id="last_price" value=0 >
+  <input type="hidden" name="order_id" id="order_id" value=<%= order['_id'] %> >
+
+    <div>
+      <div class="col">
+      <h2 class="text-left">Total price</h2>
+    </div>
+    </div>
+
+    <div class="col pull-left">
+        <h3>£<input type="text" name="order_total" id="order_total" value=<%= order['order_total'] %> ></h3>
+    </div>
+
+    <div class="col pull-right">
+      <button type="submit" id="submitBtn" value = "Submit" class="btn btn-default">Save order</button>
+    </div>
+</form>
+</div>
+<script>
+document.getElementById("order_total").innerHTML = 0;
+
+<% suppliers.forEach(function(item) { %>
+
+    <%= item["supplier_name"]%> = new Array([<% item["products"].forEach(function(thing) { %>
+    "<%= thing["product_name"] %> : £<%= thing["product_price"] %> " ,
+    <% }); %>
+    ]);
+
+      <% }); %>
+
+
+  <% suppliers.forEach(function(item) { %>
+<%= item["supplier_name"]%> = <%= item["supplier_name"]%>[0];
+<% }); %>
+
+
+$("#suppliers").bind('input', function () {
+  populateSelect();
+});
+
+function clearBoxes(){
+  document.getElementById("suppliers").value = "";
+  document.getElementById("products").value = "";
+}
+
+
+function populateSelect(){
+    cat=$('#suppliers').val().split("(")[0];
+    $('#products_list').html('');
+       eval(cat).forEach(function(t) {
+            $('#products_list').append('<option>'+t+'</option>');
+        });
+    }
+
+
+    var fileId = parseFloat(<%= order['items'][0]['product_name'].length %> -1); // used by the addFile() function to keep track of IDs
+    console.log(fileId);
+    var prices_dict = {};
+
+    function add_to_order() {
+
+      // console.log($('#suppliers').val().length);
+      if ($('#suppliers').val().length != 0)   {
+      fileId++; // increment fileId to get a unique ID for the new element
+      var priceToAdd = parseFloat($('#quantity').val())*(parseFloat($('#products').val().split("£")[1]));
+      // /var supplier_order = $('#suppliers').val();
+        document.getElementById('summary').innerHTML +=
+
+        '<div id='+fileId+'><div class="form-group"><label for="supplier_name">Supplier name:</label><input name="supplier_name" type="text" readonly class="form-control" id="supplier_name" value='+
+        $('#suppliers').val().split("(")[0]+
+        '></div><div class="form-group"><label for="supplier_contact">Supplier contact:</label><input type="text" name="supplier_contact" readonly class="form-control" id="supplier_contact" value='+
+       $('#suppliers').val().split("(")[1].split(")")[0]+
+         '></div><div class="form-group"><label for="product_name">Product name:</label><input type="text" name="product_name" readonly class="form-control" id="product_name" value='+
+        $('#products').val()+
+        '></div><div class="form-group"><label for="price_per_unit">Price per unit (£):</label><input name="product_price"  type="text" readonly class="form-control" id="price_per_unit" value='+
+       (parseFloat($('#products').val().split("£")[1]))+
+        '></div><div class="form-group"><label for="product_quantity">Quantity:</label><input type="text" name="product_quantity" readonly class="form-control" id="product_quantity" value='+
+       $('#quantity').val()+
+       '></div><div class="form-group"><label for="cost_for_items">Cost for item(s) (£):</label><input name="product_price_total" id="cost-for-items-'+fileId+'" type="text" readonly class="form-control" id="cost_for_items" value='+
+      priceToAdd+
+       '></div><a href="" onclick="javascript:removeElement('+fileId + '); return false;">Remove</a></div><hr />';
+       var new_total = parseFloat(document.getElementById("order_total").value) + priceToAdd;
+        document.getElementById("order_total").innerHTML = new_total;
+        document.getElementById("order_total").value = new_total;
+        document.getElementById("last_price").value = priceToAdd;
+        prices_dict[fileId] = parseFloat(priceToAdd);
+        if (document.getElementById("order_total").value > 0){
+          document.getElementById("submitBtn").disabled = false;
+        }
+
+        clearBoxes();
+    }}
+
+</script>
+<script>
+
+(function ($) {
+  $('.spinner .btn:first-of-type').on('click', function() {
+    $('.spinner input').val( parseInt($('.spinner input').val(), 10) + 1);
+  });
+  $('.spinner .btn:last-of-type').on('click', function() {
+    $('.spinner input').val( parseInt($('.spinner input').val(), 10) - 1);
+  });
+})(jQuery);
+</script>
