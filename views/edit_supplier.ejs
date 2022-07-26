@@ -1,0 +1,52 @@
+<%- include('header') -%>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Edit supplier</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card">
+            <h3 class="card-header">Edit supplier details</h3>
+            <div class="card-block">
+                <form action="/edit_supplier" method="post" accept-charset="utf-8">
+                    <div class="form-group">
+                        <label for="supplier_name">Supplier name:</label>
+                        <input type="text" class="form-control" id="supplier_name" name="supplier_name" value=<%=data[0]['supplier_name'] %> >
+                    </div>
+                    <div class="form-group">
+                        <label for="supplier_contact">Supplier contact:</label>
+                        <input type="text" class="form-control" id="supplier_contact" name="supplier_contact" value=<%=data[0]['supplier_contact'] %>>
+                        <input type="hidden" id="supplier_id" name="supplier_id" value=<%=data[0][ '_id'] %> >
+                    </div>
+            </div>
+            <button formaction="/edit_supplier" type="submit" id="submitBtn" value = "Submit" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Update supplier</button>
+
+        </div>
+        <div class="card">
+            <h3 class="card-header">Edit product details</h3>
+            <div class="card-block">
+                <%if (data[0]["products"]) { %>
+                    <% data[0]["products"].forEach(function(item) { %>
+                        <div class="form-group">
+                            <label for="product_name">Product name:</label>
+                            <input type="text" class="form-control" id="product_name" name="product_name_<%=item['product_name'] %>" value=<%=item['product_name'] %>>
+                            <label for="product_price">Product price:</label>
+                            <input type="text" class="form-control" id="product_price" name="product_price_<%=item['product_price'] %>" value=<%=item['product_price'] %>>
+                        </div>
+                        <button formaction='../edit_product/<%= data[0]['_id'] %>/<%=item['product_name'] %>/<%=item['product_price'] %>/' type="submit" id="submitBtn" value = "Submit" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Update product</button>
+                        <button formaction='../delete_product/<%= data[0]['_id'] %>/<%=item['product_name'] %>/<%=item['product_price'] %>/' type="submit" id="submitBtn" value = "Submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete product</button>
+
+<hr/>
+
+<p>
+
+</p>
+                        <% }); %>
+               <% } %>
+            </div>
+        </div>
+    </form>
+    <a href='/../list_suppliers' class="btn btn-default" role="button"><span class="glyphicon glyphicon-step-backward"></span>Back</a>
+
+    </div>
+    </body>
